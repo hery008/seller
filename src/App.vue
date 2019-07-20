@@ -35,7 +35,7 @@ export default {
   created(){
       axios.get('../static/data.json')
       .then(res=>{
-        console.log(res.data.seller)
+        // console.log(res.data.seller)
         this.seller = res.data.seller
       })
       .catch(err=>{
