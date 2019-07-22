@@ -2,7 +2,12 @@
     <div class="goods">
         <div class="meau-wrapper" ref="meauWrapper">
             <ul>
-                <li v-for="(item,index) in goods" :key="index" class="meau-item">
+                <li v-for="(item,index) in goods" 
+                :key="index" 
+                class="meau-item" 
+                :class="{'current':currentIndex===index}"
+                @click="selectMeau(index,$event)"
+                >
                     <span class="text border-1px">
                         <span v-show="item.type>0" class="icon" :class="classMap[item.type]"></span> {{item.name}}    
                     </span>    
@@ -34,14 +39,20 @@
                     </ul>
                 </li>
             </ul>
-        </div>          
+        </div>     
+        <shopcart></shopcart>     
     </div>
 </template>
 
 <script>
     import axios from 'axios'
     import BScroll from 'better-scroll'
+
+    import shopcart from '../shopcart/shopcart'
     export default {
+        components:{
+            shopcart
+        },
         props:{
             seller:{
                 type:Object
@@ -68,9 +79,24 @@
                 console.log(err)
             })
         },
+        computed:{
+            currentIndex(){
+                for(let i=0;i<this.listHeight.length;i++){
+                    let height1 = this.listHeight[i]
+                    let height2 = this.listHeight[i+1]
+                
+                    if(!height2 || (this.scrollY >= height1 && this.scrollY < height2) ){
+                        return i;
+                    }
+                }
+                return 0
+            }
+        },
         methods:{
             _initScroll(){
-                this.meauScroll = new BScroll(this.$refs.meauWrapper,{})
+                this.meauScroll = new BScroll(this.$refs.meauWrapper,{
+                    click:true
+                })
                 this.foodScroll = new BScroll(this.$refs.foodWrapper,{
                     probeType:3
                 })
@@ -87,6 +113,14 @@
                     height += item.clientHeight
                     this.listHeight.push(height)
                 }
+            },
+            selectMeau(index,event){
+                if(!event._constructed){
+                    return
+                }
+                let foodList = this.$refs.foodWrapper.getElementsByClassName("food-list-hook")
+                let el = foodList[index]
+                this.foodScroll.scrollToElement(el,300)
             }
         }
     }
@@ -111,6 +145,14 @@
             width:56px;
             height:54px;
             line-height:14px;
+            &.current
+                position:relative;
+                z-index:10;
+                margin-top:-1px;
+                background-color :#fff
+                font-weight:700;
+                .text
+                    border-none();
             .icon
                 display:inline-block
                 vertical-align :top
