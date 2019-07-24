@@ -26,7 +26,7 @@
                             <div class="content">
                                 <h2 class="name">{{food.name}}</h2>
                                 <p class="desc">{{food.description}}</p>
-                                 <div class="extra">
+                                <div class="extra">
                                     <span class="count">月售{{food.sellCount}}份</span>
                                     <span>好评率{{food.rating}}</span>
                                 </div>
@@ -34,13 +34,20 @@
                                     <span class="now">￥{{food.price}}</span>
                                     <span class="old" v-show="food.oldPrice">￥{{food.oldPrice}}</span>
                                 </div>
+                                <div class="cartcontrol-wrapper">
+                                    <cart-control :food="food"></cart-control>
+                                </div>
                             </div>
                         </li>
                     </ul>
                 </li>
             </ul>
         </div>     
-        <shopcart :delivery-price="seller.deliveryPrice" :min-price="seller.inPrice"></shopcart>     
+        <shopcart 
+        :deliveryPrice="seller.deliveryPrice" 
+        :minPrice="seller.minPrice"
+        :selectFoods="selectFoods"
+        ></shopcart>     
     </div>
 </template>
 
@@ -49,9 +56,11 @@
     import BScroll from 'better-scroll'
 
     import shopcart from '../shopcart/shopcart'
+    import CartControl from '../cartcontrol/catcontrol'
     export default {
         components:{
-            shopcart
+            shopcart,
+            CartControl
         },
         props:{
             seller:{
@@ -84,12 +93,22 @@
                 for(let i=0;i<this.listHeight.length;i++){
                     let height1 = this.listHeight[i]
                     let height2 = this.listHeight[i+1]
-                
                     if(!height2 || (this.scrollY >= height1 && this.scrollY < height2) ){
                         return i;
                     }
                 }
                 return 0
+            },
+            selectFoods(){
+                let foods = []
+                this.goods.forEach((good)=>{
+                    good.foods.forEach((food)=>{
+                        if(food.count){
+                            foods.push(food)
+                        }
+                    })
+                })
+                return foods
             }
         },
         methods:{
@@ -98,6 +117,7 @@
                     click:true
                 })
                 this.foodScroll = new BScroll(this.$refs.foodWrapper,{
+                    click:true,
                     probeType:3
                 })
                 this.foodScroll.on('scroll',(pos)=>{
@@ -226,6 +246,9 @@
                     .old
                         text-decoration: line-through
                         font-size: 10px
-                        color: rgb(147, 153, 159)    
-
+                        color: rgb(147, 153, 159)   
+                .cartcontrol-wrapper
+                    position :absolute;
+                    bottom:12px;
+                    right:0px;
 </style>

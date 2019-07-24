@@ -29,7 +29,7 @@ export default {
   },
   data() {
     return {
-        seller:''
+        seller:{}
     }
   },
   created(){
@@ -47,58 +47,6 @@ export default {
       $(this).addClass("currentSpan").siblings().children().removeClass("currentSpan")
     })
   },
-  methods:{
-    getData(){
-
-    // $.ajax({
-    //       type: 'GET',
-    //       url:'https://api.nal.usda.gov/ndb/list?format=json&lt=n&sort=n&api_key=xmvRjoCM6BNaK0mSsqgRnXTeP06lgVdpC0ypsyy7',
-    //       dataType:'jsonp',
-    //       jsonp:"callback",
-    //       contentType:'application/json',
-    //       success: function(data) {
-    //         // JSON.stringify(data);
-    //         // var data=data.query.results.json.result.data;
-    //         console.log(JSON.stringify(data));             
-    //       },
-    //       error: function(error) {
-    //         console.log(error);
-    //       }
-    //     });
-      // this.$jsonp('https://api.nal.usda.gov/ndb/list?format=json&lt=n&sort=n&api_key=xmvRjoCM6BNaK0mSsqgRnXTeP06lgVdpC0ypsyy7').then(res => {
-      //   console.log(JSON.stringify(res))
-      // }).catch(err => {
-      //   console.log(err)
-      // })
-      // axios.get('/api/?format=json&lt=f&sort=n&api_key=xmvRjoCM6BNaK0mSsqgRnXTeP06lgVdpC0ypsyy7&max=10')
-      // .then(res=>{
-      //   console.log(res)
-      // })
-      // .catch(err=>{
-      //   console.log(err)
-      // })
-      // let obj = {
-      //         'format':'json',
-      //         'lt':'n',
-      //         'max':10,
-      //         'api_key':'xmvRjoCM6BNaK0mSsqgRnXTeP06lgVdpC0ypsyy7',
-      //         'sort':'n'
-      //     }
-      //     this.$jsonp('https://api.nal.usda.gov/ndb/list/', obj).then(res => {
-      //     　　console.log(res.item)
-      //     }).catch(err => {
-      //     　　console.log(err)
-      //     })
-
-
-      // this.$jsonp('https://api.nal.usda.gov/ndb/list', { max: 20,'api_key':'xmvRjoCM6BNaK0mSsqgRnXTeP06lgVdpC0ypsyy7', 'lt':'n','sort':'n'}).then(json => {
-      //   console.log(json)
-      // }).catch(err => {
-      //   console.log(err)
-        
-      // })    
-    }
-  }
 }
 </script>
 
