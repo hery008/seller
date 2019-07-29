@@ -19,7 +19,7 @@
                 <li v-for="(item,index) in goods" :key="index" class="foods-list food-list-hook">
                     <h1 class="title">{{item.name}}</h1>
                     <ul>
-                        <li v-for="(food,indexs) in item.foods" :key="indexs" class="food-item border-item">
+                        <li @click="selsectFood(food,$event)" v-for="(food,indexs) in item.foods" :key="indexs" class="food-item border-item">
                             <div class="icon">
                                 <img width="57" heigh="57" :src="food.icon">
                             </div>
@@ -35,7 +35,7 @@
                                     <span class="old" v-show="food.oldPrice">￥{{food.oldPrice}}</span>
                                 </div>
                                 <div class="cartcontrol-wrapper">
-                                    <cart-control :food="food"></cart-control>
+                                    <cart-control :food="food" @cartAdd="cartAdd"></cart-control>
                                 </div>
                             </div>
                         </li>
@@ -47,7 +47,9 @@
         :deliveryPrice="seller.deliveryPrice" 
         :minPrice="seller.minPrice"
         :selectFoods="selectFoods"
-        ></shopcart>     
+        ref="shopcart"
+        ></shopcart>   
+        <food :food="selectedFood" ref="food"></food>     
     </div>
 </template>
 
@@ -57,10 +59,12 @@
 
     import shopcart from '../shopcart/shopcart'
     import CartControl from '../cartcontrol/catcontrol'
+    import Food from '../food/food'
     export default {
         components:{
             shopcart,
-            CartControl
+            CartControl,
+            Food
         },
         props:{
             seller:{
@@ -72,7 +76,8 @@
                 goods: [],
                 classMap : ['decrease','discount','special','invoice','guarantee'],
                 listHeight: [],
-                scrollY:0
+                scrollY:0,
+                selectedFood:{}
             }
         },
         created(){
@@ -141,7 +146,18 @@
                 let foodList = this.$refs.foodWrapper.getElementsByClassName("food-list-hook")
                 let el = foodList[index]
                 this.foodScroll.scrollToElement(el,300)
-            }
+            },
+            selsectFood(food,event){
+                this.selectedFood = food  
+                this.$refs.food.show();         
+            },
+            _drop(target){
+                this.$refs.shopcart.drop(target)
+            },
+            cartAdd(target){
+                this._drop(target)
+            },
+            
         }
     }
 </script>

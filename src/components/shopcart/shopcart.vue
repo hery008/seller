@@ -17,11 +17,30 @@
             </div>
           </div>
       </div>
+      <div class="ball-container">
+       
+            <div class="ball" v-for="(item,index) in balls" :key="index" v-show="item.show">
+              <div class="inner inner-hook"></div>
+            </div>
+         
+      </div>
   </div>
 </template>
 
 <script>
 export default {
+    data() {
+      return {
+        balls: [
+          {show:false},
+          {show:false},
+          {show:false},
+          {show:false},
+          {show:false},
+        ],
+        dropBall:[]
+      }
+    },
     props:{
       selectFoods:{
         type:Array,
@@ -70,7 +89,21 @@ export default {
           return 'enough'
         }
       }
-    }
+    },
+    methods:{
+      drop(el){
+        for(let i = 0;i<this.balls.length;i++){
+          let ball = this.balls[i]
+          if(!ball.show){
+            ball.show = true
+            ball.el = el
+            this.dropBall.push(ball)
+            return
+          }
+        }
+      },
+    },
+   
 }
 </script>
 
@@ -162,5 +195,20 @@ export default {
         &.enough
           color:#fff
           background :#00b43c
+  .ball-container
+    .ball 
+      position :fixed
+      left 32px
+      bottom 22px
+      z-index:200
+      &.drop-transition
+        transition:all 0.4s cubic-bezier(0.49, -0.29, 0.75, 0.41)
+        .inner
+          background :rgb(0,160,220)
+          width:16px;
+          height:16px;
+          border-radius:50%;
+          transition:all 0.4s linear
+
 
 </style>
